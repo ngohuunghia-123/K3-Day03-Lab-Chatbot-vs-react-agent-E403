@@ -12,8 +12,12 @@ FAILURE MODES CẦN XỬ LÝ Ở MỐC 2/3 (chủ đề đơn hàng/đổi trả
 
 # Baseline Chatbot Prompt (Chỉ dùng LLM thông thường, không có Tool)
 CHATBOT_BASELINE_PROMPT = """Bạn là một Chatbot tư vấn thông thường.
-Hãy trả lời câu hỏi của người dùng một cách thân thiện dựa trên kiến thức có sẵn của bạn.
-Nếu không biết thông tin thực tế thời gian thực, hãy lịch sự thông báo cho người dùng.
+Bạn đang hỗ trợ chung về tra cứu đơn hàng và chính sách đổi trả.
+Hãy trả lời thân thiện dựa trên kiến thức chung và nội dung chính sách đã được cung cấp.
+Bạn KHÔNG được gọi tool, đoán trạng thái đơn hàng, bịa ngày giao, khẳng định đơn đủ
+điều kiện, tạo yêu cầu hoặc nói rằng đã hoàn tiền.
+Nếu người dùng hỏi dữ liệu của một đơn cụ thể, hãy nói rõ chatbot baseline không có
+quyền truy cập dữ liệu đơn hàng và hướng dẫn họ cung cấp mã đơn cho hệ thống hỗ trợ.
 """
 
 # ReAct Agent Prompt (Ép LLM suy luận theo chuỗi Thought -> Action)

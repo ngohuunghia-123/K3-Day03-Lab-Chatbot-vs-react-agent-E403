@@ -22,7 +22,7 @@ chứng dữ liệu đơn hàng thực tế và không nên tự khẳng định
 | ⏳ **Long Horizon** | `4/5` | Một số yêu cầu cần 3-4 bước; chưa phải quy trình dài hạn nhiều ngày. |
 | **TỔNG ĐIỂM FIT** | **19/20** | **KẾT LUẬN: BÀI TOÁN RẤT NÊN DÙNG REACT AGENT!** |
 
-## 🛠️ 2. TOOL DỰ KIẾN (MỐC 1)
+## 🛠️ 2. TOOL SPECS (MỐC 2)
 
 | Tool | Mục đích | Loại thao tác |
 | :--- | :--- | :--- |
@@ -31,7 +31,7 @@ chứng dữ liệu đơn hàng thực tế và không nên tự khẳng định
 | `check_return_eligibility(order_id, reason)` | Kiểm tra đơn có đủ điều kiện đổi trả theo lý do | Read-only |
 | `create_return_request(order_id, reason)` | Tạo yêu cầu đổi trả sau khi đã xác nhận đủ điều kiện | Ghi dữ liệu, cần xác nhận |
 
-## ⚠️ 3. FAILURE MODES VÀ GUARDRAILS (MỐC 1)
+## ⚠️ 3. FAILURE MODES VÀ GUARDRAILS (ĐỊNH HƯỚNG MỐC 3)
 
 | Trường hợp lỗi | Cách xử lý an toàn |
 | :--- | :--- |
@@ -45,10 +45,26 @@ chứng dữ liệu đơn hàng thực tế và không nên tự khẳng định
 
 ---
 
-## 🔍 4. SO SÁNH PHẢN HỒI (SẼ BỔ SUNG TỪ MỐC 2)
+## 🔍 4. BASELINE CHATBOT — MỐC 2
 
-Phần so sánh Chatbot Baseline và ReAct Agent sẽ được ghi sau khi nhóm hoàn thành
-Mốc 2 và chạy bộ test case của chủ đề đơn hàng/đổi trả.
+Protocol: `system prompt + user message → một LLM call → final response`, không
+gọi tool và không được nhúng dữ liệu đơn hàng vào prompt.
+
+| Case | Dạng | Kỳ vọng đánh giá Baseline |
+| :---: | :--- | :--- |
+| 1 | Hướng dẫn chung | **Correct** nếu nêu quy trình chung, không bịa đơn cụ thể. |
+| 2 | Hướng dẫn chung | **Correct** nếu liệt kê thông tin cần cung cấp. |
+| 3 | Tra cứu + quyết định | **Safe fallback** nếu nói không có quyền truy cập đơn DH1001; **Hallucinated** nếu tự đoán trạng thái/đủ điều kiện. |
+| 4 | Multi-step + hành động | **Safe fallback** nếu không khẳng định DH1002 và không nói đã gửi yêu cầu. |
+| 5 | Input bẫy | **Safe fallback** nếu từ chối xác nhận hoàn tiền và yêu cầu mã đơn/lý do hợp lệ. |
+
+### Kết quả chạy local
+
+Đã chạy `python src/app.py` với `MockProvider`. Provider offline trả về câu giả lập
+cho mỗi case, không gọi tool; vì vậy case 1-5 được ghi nhận là **chưa đủ chất lượng
+để giải quyết nghiệp vụ** nhưng không có bằng chứng nó đã gọi tool hay tự tạo yêu cầu.
+Khi chạy với API provider thật, Role 5 cần dán raw response vào bảng này và phân loại
+từng case thành `correct`, `safe fallback` hoặc `hallucinated`.
 
 ### Kết luận Mốc 1
 
