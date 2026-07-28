@@ -2,14 +2,14 @@
   {
     "id": 1,
     "category": "🟢 Đơn giản (Chỉ cần LLM)",
-    "question": "Bạn có thể hướng dẫn chung các bước đổi trả hàng không?",
-    "expected_behavior": "Chatbot nêu hướng dẫn/chính sách chung, không khẳng định trạng thái của một đơn cụ thể."
+    "question": "Tôi muốn đổi một sản phẩm mua online, thông thường cần chuẩn bị những thông tin gì?",
+    "expected_behavior": "Chatbot trả lời hướng dẫn chung và nói chính sách thực tế có thể khác theo từng cửa hàng."
   },
   {
     "id": 2,
     "category": "🟢 Đơn giản (Chỉ cần LLM)",
-    "question": "Đổi trả hàng thường cần cung cấp những thông tin gì?",
-    "expected_behavior": "Chatbot trả lời kiến thức chung trực tiếp, không cần gọi tool."
+    "question": "Khác nhau cơ bản giữa đổi hàng và trả hàng là gì?",
+    "expected_behavior": "Chatbot giải thích khái niệm chung, không khẳng định chính sách cụ thể của cửa hàng."
   },
   {
     "id": 3,
