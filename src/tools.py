@@ -1,6 +1,13 @@
 """
 🛠️ TOOL REGISTRY & SCHEMAS (Dành cho Role 2: Tool & Spec Engineer)
 Nơi khai báo tất cả các "món đồ nghề" mà ReAct Agent có thể gọi.
+
+CHỦ ĐỀ MỐC 1: Trợ Lý Tra Cứu Đơn Hàng & Xử Lý Đổi Trả
+Các tool dự kiến triển khai ở Mốc 2:
+- lookup_order_status(order_id)
+- get_return_policy()
+- check_return_eligibility(order_id, reason)
+- create_return_request(order_id, reason)  # chỉ gọi sau khi đủ điều kiện
 """
 
 def get_weather(location: str) -> str:

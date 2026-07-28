@@ -1,6 +1,13 @@
 """
 🧠 PROMPTS & SAFEGUARDS (Dành cho Role 3: Prompt & Safeguard Engineer)
 Nơi cấu hình System Prompt và Phanh An Toàn (Guardrails) cho AI.
+
+FAILURE MODES CẦN XỬ LÝ Ở MỐC 2/3 (chủ đề đơn hàng/đổi trả):
+- Mã đơn sai, không tồn tại hoặc thiếu thông tin.
+- Đơn chưa giao, quá hạn hoặc sản phẩm không đủ điều kiện đổi trả.
+- Tool timeout/dữ liệu thiếu; không được bịa trạng thái đơn hàng.
+- Không được gọi create_return_request trước khi check_return_eligibility.
+- Giới hạn số vòng lặp để tránh hỏi/gọi tool vô hạn.
 """
 
 # Baseline Chatbot Prompt (Chỉ dùng LLM thông thường, không có Tool)
