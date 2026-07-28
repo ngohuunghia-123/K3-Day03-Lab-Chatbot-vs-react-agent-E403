@@ -11,5 +11,5 @@
       I -->|Chưa| F
       I -->|Rồi| J[Final Answer]
       G --> K{Tool lỗi?}
-      K -->|Có| L[Safe Fallback hoặc hỏi lại]
-      K -->|Không| H
+      K -->|Yes| L[Safe Fallback hoặc hỏi lại]
+      K -->|No| H  
