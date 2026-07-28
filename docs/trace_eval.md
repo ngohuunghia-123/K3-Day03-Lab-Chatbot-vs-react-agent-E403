@@ -124,6 +124,6 @@ parser đã được nâng cấp để nhận cả dạng có nháy và không n
 
 ### Kết luận Mốc 1
 
-Bài toán đạt **19/20**, vì cần dữ liệu thực tế, nhiều bước suy luận và có thao tác
+Bài toán đạt **19/20**, vì cần dữ liệu thực tế, nhiều bước suy luận và có thao tác..
 ghi dữ liệu cần kiểm soát. Câu hỏi kiến thức chung vẫn có thể dùng Chatbot path;
 các yêu cầu tra cứu/đổi trả nhiều bước dùng ReAct Agent.
