@@ -66,6 +66,61 @@ cho mỗi case, không gọi tool; vì vậy case 1-5 được ghi nhận là **
 Khi chạy với API provider thật, Role 5 cần dán raw response vào bảng này và phân loại
 từng case thành `correct`, `safe fallback` hoặc `hallucinated`.
 
+## 🔄 5. REACT TRACE — MỐC 3
+
+Chạy bằng `LLM_PROVIDER=mock python src/app.py`. Observation được application
+chèn từ tool thật trong `src/tools.py`; MockProvider không tự sinh Observation.
+
+### Case 3 — Multi-step, đủ điều kiện đổi trả
+
+```text
+Thought: Cần tra cứu trạng thái đơn DH1001 trước.
+Action: lookup_order_status['DH1001']
+Observation: Đơn DH1001: trạng thái=Đã giao; sản phẩm=Tai nghe Bluetooth X1; ngày giao=2026-07-20.
+Thought: Cần kiểm tra điều kiện đổi trả của đơn DH1001.
+Action: check_return_eligibility['DH1001', 'sản phẩm bị lỗi']
+Observation: ĐỦ ĐIỀU KIỆN: Đơn DH1001 có thể đổi trả với lý do 'sản phẩm bị lỗi'.
+Final Answer: Đơn DH1001 đủ điều kiện đổi trả; cần xác nhận trước khi tạo yêu cầu.
+```
+
+### Case 4 — Multi-step, đơn chưa giao
+
+```text
+Action: lookup_order_status['DH1002']
+Observation: Đơn DH1002: trạng thái=Đang giao; sản phẩm=Bàn phím cơ K2; ngày giao=chưa giao.
+Action: get_return_policy[]
+Observation: ... Đơn chưa giao ... không được tạo yêu cầu.
+Final Answer: Đơn DH1002 chưa giao nên hiện chưa thể gửi yêu cầu đổi trả.
+```
+
+### Case 5 — Failed trace và Guardrail
+
+```text
+Action: lookup_order_status['Atlantis-999']
+Observation: LỖI: Mã đơn hàng phải có dạng DH + chữ số, ví dụ DH1001.
+Action: lookup_order_status['Atlantis-999']  # lặp lại lần 2
+Action: lookup_order_status['Atlantis-999']  # lặp lại lần 3
+GUARDRAIL: Dừng tại MAX_ITERATIONS=3, không crash và không xác nhận hoàn tiền.
+```
+
+**Root cause:** Mock/LLM chưa tự chuyển hướng khi mã đơn sai, dẫn đến repeated
+Action. **Cơ chế bảo vệ:** parser không cho phép Action sai định dạng, executor
+trả lỗi thành Observation, và `MAX_ITERATIONS` ngắt vòng lặp vô hạn bằng safe
+fallback.
+
+### Xác minh bằng OpenAI thật
+
+Đã chạy 3 case nghiệp vụ bằng `LLM_PROVIDER=openai` với API key thật:
+
+| Case | Kết quả | Tool path |
+| :---: | :--- | :--- |
+| 3 | `final` — đủ điều kiện đổi trả | `lookup_order_status` → `check_return_eligibility` |
+| 4 | `final` — đơn chưa giao, không thể đổi trả ngay | `lookup_order_status` → `get_return_policy` |
+| 5 | `final` — yêu cầu mã đơn hợp lệ, không xác nhận hoàn tiền | `lookup_order_status` → safe fallback |
+
+OpenAI sinh Action không nháy tham số, ví dụ `lookup_order_status[DH1001]`;
+parser đã được nâng cấp để nhận cả dạng có nháy và không nháy.
+
 ### Kết luận Mốc 1
 
 Bài toán đạt **19/20**, vì cần dữ liệu thực tế, nhiều bước suy luận và có thao tác
