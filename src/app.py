@@ -1,6 +1,7 @@
 """
 🚀 CORE AGENT APP (Dành cho Role 4: Core Agent Developer)
 File chính ghép nối tất cả các thành phần: Tools + Prompts + Test Cases + Multi-Provider.
+✅ Role 4 - Mốc 1: Đã kiểm tra môi trường và ứng dụng khởi chạy thành công.
 """
 
 import json
